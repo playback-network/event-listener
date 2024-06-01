@@ -17,8 +17,9 @@ function extractValuation(text) {
 }
 
 // Example usage
-// const exampleString =
-//   "blah blah blah blah blah Valuation: 8.765244 blah blah blah";
+// const exampleString = `Yes, these are indeed fish. The first image features a Blue Tang, known scientifically as Paracanthurus hepatus, which is famous for its vivid blue color and striking yellow tail. The second image shows a Yellow Tang, scientifically named Zebrasoma flavescens, recognized by its bright yellow color and distinct spotted patterns along its cheeks and dorsal area.
+
+// Valuation: 8.8923`;
 // const valuation = extractValuation(exampleString);
 // console.log(`Extracted valuation: ${valuation}`); // Output: Extracted valuation: 8.765244
 

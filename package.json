@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1632.0",
     "ethers": "^6.12.1",
     "winston": "^3.13.0",
     "winston-daily-rotate-file": "^5.0.0"

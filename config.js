@@ -1,7 +1,9 @@
 module.exports = {
   rpcUrl: "https://devnet.galadriel.com",
-  contractAddress: "0x815482f3CdD716F6dBefa7FF7E5050a79e841dE9", //Galadriel vision contract
+  contractAddress: "0x8c678839dE8fb74D9c66b10DF20FEAe79b2848d9", //Galadriel vision contract
   eventName: "ResponseReceived",
+  segmentedDataBucket:
+    "amplify-db6s1roouv0tm-dev-bra-mediasbucket5fdfde77-bktlwbdhkr1y",
   abi: [
     {
       type: "constructor",
@@ -33,6 +35,7 @@ module.exports = {
       outputs: [
         { name: "owner", type: "address", internalType: "address" },
         { name: "messagesCount", type: "uint256", internalType: "uint256" },
+        { name: "taskId", type: "uint256", internalType: "uint256" },
       ],
       stateMutability: "view",
     },
@@ -149,6 +152,7 @@ module.exports = {
       name: "startChat",
       inputs: [
         { name: "chatOwner", type: "address", internalType: "address" },
+        { name: "taskId", type: "uint256", internalType: "uint256" },
         { name: "systemMessage", type: "string", internalType: "string" },
         { name: "message", type: "string", internalType: "string" },
         { name: "imageUrls", type: "string[]", internalType: "string[]" },
@@ -212,7 +216,7 @@ module.exports = {
           internalType: "address",
         },
         {
-          name: "chatId",
+          name: "taskId",
           type: "uint256",
           indexed: true,
           internalType: "uint256",
@@ -223,6 +227,12 @@ module.exports = {
           type: "string",
           indexed: false,
           internalType: "string",
+        },
+        {
+          name: "imageUrls",
+          type: "string[]",
+          indexed: false,
+          internalType: "string[]",
         },
       ],
       anonymous: false,
