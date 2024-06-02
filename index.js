@@ -1,7 +1,13 @@
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+
 const ethers = require("ethers");
+const JSONbig = require("json-bigint")({ storeAsString: true });
+
 const config = require("./config");
 const extractValuation = require("./helpers/extractValuation");
-const getS3Urls = require("./helpers/getS3Urls");
+const lighthouseManager = require("./helpers/lighthouseManager");
+const { invokeLambda } = require("./helpers/invokeLambda");
 
 async function main() {
   const provider = new ethers.JsonRpcProvider(config.rpcUrl);
@@ -17,12 +23,13 @@ async function main() {
 
   // `contract.on` is called once for each existing event, then again for each new event
   // `contract.once` is called for each new event
-  contract.on(config.eventName, (...args) => {
-    console.log("args received: ", args);
+  contract.on(config.eventName, async (...args) => {
+    console.log("-----!!!Event received!!!-----");
+    // console.log("args received: ", args);
     const recipientAddress = args[0];
     console.log(`recipientAddress received: ${recipientAddress}`);
-    const chatId = args[1];
-    console.log(`chatId received: ${chatId}`);
+    const taskId = args[1];
+    console.log(`taskId received: ${taskId}`);
     const success = args[2];
     console.log(`success received: ${success}`);
     const response = args[3];
@@ -37,15 +44,37 @@ async function main() {
       // Need to respond to the lambda with a rejection
       return;
     }
-    console.log("non-zero valuation, continuing...");
+    if (success === false) {
+      console.log("Success is false, rejecting...");
+      // Need to respond to the lambda with a rejection
+      return;
+    }
+    const data = {
+      taskId,
+      valuation,
+      imageUrls,
+    };
+    const jsonString = JSONbig.stringify(data);
+    console.log("Lighthouse JSON string Payload", jsonString);
+    const apiKey = process.env.LIGHTHOUSE_API_KEY;
+    const name = `taskId-${taskId}`;
 
-    // Store on filecoin
-    // - image urls
-    // - valuation
-    // - recipientAddress
-    // - taskId
+    const lighthouseResponse = await lighthouseManager.uploadToLighthouse(
+      jsonString,
+      apiKey,
+      name
+    );
+    console.log("lighthouseResponse", lighthouseResponse);
 
     // Send recipientAddress and valuation to lambda
+    const payload = {
+      taskId,
+      recipientAddress,
+      valuation,
+    };
+    const functionName = config.lambdaName;
+
+    await invokeLambda(functionName, payload);
   });
 
   console.log(`Listening for ${config.eventName} events...`);

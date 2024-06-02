@@ -1,18 +1,23 @@
-import lighthouse from "@lighthouse-web3/sdk";
+const lighthouse = require("@lighthouse-web3/sdk");
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
-const text = "Sometimes, I Wish I Was A Cloud, Just Floating Along";
-const apiKey = "YOUR_API_KEY";
-const name = "shikamaru"; //Optional
-
-const uploadToLighthouse = async (text, apiKey, name) => {
+const uploadToLighthouse = async (jsonString, apiKey, name) => {
   try {
-    const response = await lighthouse.uploadText(text, apiKey, name);
+    const response = await lighthouse.uploadText(jsonString, apiKey, name);
+    console.log("response", response);
     return response;
   } catch (error) {
     console.error("Error uploading text to Lighthouse:", error);
     throw error;
   }
 };
+
+// const response = uploadToLighthouse(jsonString, apiKey, name);
+// console.log(response);
+
+module.exports = { uploadToLighthouse };
+
 // const response = await lighthouse.uploadText(text, apiKey, name)
 
 // console.log(response)

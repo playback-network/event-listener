@@ -11,8 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@lighthouse-web3/sdk": "^0.3.3",
     "aws-sdk": "^2.1632.0",
+    "dotenv": "^16.4.5",
     "ethers": "^6.12.1",
+    "json-bigint": "^1.0.0",
     "winston": "^3.13.0",
     "winston-daily-rotate-file": "^5.0.0"
   }

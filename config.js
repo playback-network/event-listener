@@ -4,6 +4,7 @@ module.exports = {
   eventName: "ResponseReceived",
   segmentedDataBucket:
     "amplify-db6s1roouv0tm-dev-bra-mediasbucket5fdfde77-bktlwbdhkr1y",
+  lambdaName: "amplify-db6s1roouv0tm-dev-payloadmanagerfunctionla-Fw9lL82vzIoX",
   abi: [
     {
       type: "constructor",
